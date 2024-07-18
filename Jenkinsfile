@@ -45,9 +45,11 @@ pipeline {
       steps {
         withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
           script {
-            sh export PATH=${KUBECTL_HOME}:$PATH
-            sh 'kubectl apply -f deployment.yaml'
-            sh 'kubectl apply -f service.yaml'
+            sh '''
+              export PATH=${KUBECTL_HOME}:$PATH
+              kubectl apply -f deployment.yaml
+              kubectl apply -f service.yaml
+            '''
           }
         }
       }
