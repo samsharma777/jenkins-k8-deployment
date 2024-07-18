@@ -2,6 +2,7 @@ pipeline {
   environment {
     dockerimagename = "nanditechbytes/react-app"
     dockerImage = ""
+    KUBECTL_HOME = "${env.WORKSPACE}/kubectl"
   }
   agent any
   stages {
@@ -16,7 +17,7 @@ pipeline {
           sh '''
             curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
             chmod +x ./kubectl
-            mv ./kubectl /usr/local/bin/kubectl
+            mv ./kubectl ${KUBECTL_HOME}
           '''
         }
       }
@@ -44,6 +45,7 @@ pipeline {
       steps {
         withCredentials([file(credentialsId: 'minikube-config', variable: 'KUBECONFIG')]) {
           script {
+            export PATH=${KUBECTL_HOME}:$PATH
             sh 'kubectl apply -f deployment.yaml'
             sh 'kubectl apply -f service.yaml'
           }
