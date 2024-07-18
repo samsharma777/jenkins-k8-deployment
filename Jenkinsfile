@@ -10,6 +10,17 @@ pipeline {
         git 'https://github.com/YOURUSERNAME/jenkins-kubernetes-deployment.git'
       }
     }
+    stage('Install kubectl') {
+      steps {
+        script {
+          sh '''
+            curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
+            chmod +x ./kubectl
+            sudo mv ./kubectl /usr/local/bin/kubectl
+          '''
+        }
+      }
+    }
     stage('Build image') {
       steps{
         script {
@@ -20,7 +31,7 @@ pipeline {
     stage('Pushing Image') {
       environment {
           registryCredential = 'dockerhub-credentials'
-           }
+      }
       steps{
         script {
           docker.withRegistry( 'https://registry.hub.docker.com', registryCredential ) {
@@ -31,9 +42,11 @@ pipeline {
     }
     stage('Deploying React.js container to Kubernetes') {
       steps {
-        script {
-          kubernetesDeploy(configs: "deployment.yaml", 
-                                         "service.yaml")
+        withCredentials([file(credentialsId: 'minikube-config', variable: 'KUBECONFIG')]) {
+          script {
+            sh 'kubectl apply -f deployment.yaml'
+            sh 'kubectl apply -f service.yaml'
+          }
         }
       }
     }
