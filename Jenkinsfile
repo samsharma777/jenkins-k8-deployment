@@ -7,7 +7,7 @@ pipeline {
   stages {
     stage('Checkout Source') {
       steps {
-        git 'https://github.com/nanditechbytes/jenkins-k8-deployment.git'
+        git branch: 'main', url: 'https://github.com/nanditechbytes/jenkins-k8-deployment.git', credentialsId: 'Github'
       }
     }
     stage('Install kubectl') {
