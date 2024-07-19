@@ -1,6 +1,6 @@
 pipeline {
   environment {
-    dockerimagename = "nanditechbytes/node-app"
+    dockerimagename = "devops091/node-app"
     dockerImage = ""
     KUBECTL_HOME = "${env.WORKSPACE}/kubectl"
   }
