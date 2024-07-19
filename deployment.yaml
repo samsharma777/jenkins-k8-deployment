@@ -1,25 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: deployment #The name of the Kubernetes 
-        #Deployment to be created in the Kubernetes cluster
+  name: simple-node-app
   labels:
-    app: react-app
+    app: simple-node-app
 spec:
-  replicas: 2 #The number of pods to be created in the 
-   #Kubernetes cluster for the React.js application container
+  replicas: 3
   selector:
     matchLabels:
-      app: react-app
+      app: simple-node-app
   template:
     metadata:
       labels:
-        app: react-app 
+        app: simple-node-app
     spec:
       containers:
-      - name: react-app #The name of the react.js application container
-        #The Docker image for building the React.js application container
-        image: bravinwasike/react-app:latest 
+      - name: simple-node-app
+        image: simple-node-app:latest
         ports:
-        - containerPort: 3000 #The port for the React.js application container
-
+        - containerPort: 3000
