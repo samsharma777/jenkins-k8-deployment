@@ -1,6 +1,6 @@
 pipeline {
   environment {
-    dockerimagename = "nanditechbytes/react-app"
+    dockerimagename = "nanditechbytes/node-app"
     dockerImage = ""
     KUBECTL_HOME = "${env.WORKSPACE}/kubectl"
   }
@@ -30,7 +30,7 @@ pipeline {
     }
     stage('Pushing Image') {
       environment {
-          registryCredential = 'dockerhub-credentials'
+          registryCredential = 'docker'
       }
       steps{
         script {
@@ -40,7 +40,7 @@ pipeline {
         }
       }
     }
-    stage('Deploying React.js container to Kubernetes') {
+    stage('Deploying Node.js container to Kubernetes') {
       steps {
         withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
           script {
