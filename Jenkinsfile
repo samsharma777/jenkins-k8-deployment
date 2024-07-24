@@ -14,7 +14,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    dockerBuild ('devops091/dotnet-app',${env.BUILD_ID})
+                    dockerBuild ('devops091/dotnet-app')
                 }
             }
 
