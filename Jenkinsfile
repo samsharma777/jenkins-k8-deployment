@@ -1,7 +1,7 @@
 @Library ('dockerBuild') _
 
 pipeline {
-    agent {'ec2-fleet'}
+    agent {label 'ec2-fleet'}
 
     stages {
         stage('Checkout') {
