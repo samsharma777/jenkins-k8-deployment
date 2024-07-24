@@ -11,6 +11,14 @@ pipeline {
             }
 
         }
+        stage('Identify User') {
+            steps {
+                script {
+                    // Output the current user
+                    sh 'whoami'
+                }
+            }
+        }
         stage('Build') {
             steps {
                 script {
