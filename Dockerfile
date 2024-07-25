@@ -38,4 +38,4 @@ ENV ASPNETCORE_ENVIRONMENT=Development
 ENV ASPNETCORE_URLS=http://+;https://+
 
 ENTRYPOINT ["dotnet", "sample-app.dll"]
->>>>>>> 3f9a13a4 (update app)
+
