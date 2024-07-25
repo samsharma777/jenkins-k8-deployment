@@ -3,6 +3,10 @@
 pipeline {
     agent any
 
+    environment {
+        CERT_PASSWORD = credentials('CERT_PASSWORD')
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -11,18 +15,10 @@ pipeline {
             }
 
         }
-        stage('Identify User') {
-            steps {
-                script {
-                    // Output the current user
-                    sh 'whoami'
-                }
-            }
-        }
         stage('Build') {
             steps {
                 script {
-                    dockerBuild ('devops091/dotnet-app')
+                    dockerBuild ('devops091/dotnet-app',"--build-arg CERT_PASSWORD=${env.CERT_PASSWORD}")
                 }
             }
 
