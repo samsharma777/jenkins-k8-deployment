@@ -1,12 +1,7 @@
 @Library ('dockerBuild') _
 
 pipeline {
-    agent {
-      docker {
-        image 'jenkins-agent'
-        args '--network jenkins-minikube -v /var/run/docker.sock:/var/run/docker.sock'
-    }
-}
+    agent any
 
     stages {
         stage('Checkout') {
