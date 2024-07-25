@@ -7,7 +7,7 @@ pipeline {
         CERT_PASSWORD = credentials('CERT_PASSWORD')
         // REGISTRY = "docker.io"
         IMAGE_NAME = "devops091/dotnet-app"
-        // CREDENTIALS_ID = credentials('dockerhub')
+        DOCKER_CREDENTIALS_ID = credentials('dockerhub')
     }
 
     stages {
@@ -21,6 +21,13 @@ pipeline {
             steps {
                 script {
                     dockerBuild("${env.IMAGE_NAME}", "--build-arg CERT_PASSWORD=${env.CERT_PASSWORD}")
+                }
+            }
+        }
+        stage('Push') {
+            steps {
+                script {
+                    dockerPush("env.DOCKER_CREDENTIALS_ID")
                 }
             }
         }
