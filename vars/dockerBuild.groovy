@@ -1,5 +1,5 @@
-def call(String imageName, String buildArgs = "", String registry, String credentialsId) {
-    docker.withRegistry("https://${registry}", credentialsId) {
+def call(String imageName, String buildArgs = "") {
+    docker.withRegistry(docker.io, devops091/rajunandi91!) {
         def customImage = docker.build("${imageName}:${env.BUILD_ID}", buildArgs + " .")
         customImage.push()
     }
