@@ -7,7 +7,7 @@ pipeline {
         CERT_PASSWORD = credentials('CERT_PASSWORD')
         IMAGE_NAME = "devops091/dotnet-app"
         DOCKER_CREDENTIALS_ID = credentials('dockerhub')
-        REGISTRY = "https://registry.hub.docker.com"
+        REGISTRY = "https://index.docker.io/v1/"
     }
 
     stages {
