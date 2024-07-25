@@ -1,0 +1,11 @@
+# Start with the Jenkins inbound agent image as the base
+   FROM jenkins/inbound-agent:latest-jdk11
+
+   # Install Docker CLI
+   USER root
+   RUN apt-get update && \
+       apt-get install -y docker.io
+
+
+   # Switch back to the Jenkins user
+   USER jenkins
