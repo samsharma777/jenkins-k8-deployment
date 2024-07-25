@@ -6,8 +6,9 @@ pipeline {
     environment {
         CERT_PASSWORD = credentials('CERT_PASSWORD')
         IMAGE_NAME = "devops091/dotnet-app"
-        DOCKER_CREDENTIALS_ID = credentials('dockerhub')
+        PASSWORD = credentials('dockerhub')
         REGISTRY = "https://index.docker.io/v1/"
+        USER = "devops091"
     }
 
     stages {
@@ -25,10 +26,8 @@ pipeline {
             }
         }
         stage('Push') {
-            steps {
-                script {
-                    dockerPush("${env.REGISTRY}", "${env.DOCKER_CREDENTIALS_ID}")
-                }
+            script {
+                dockerPush("${env.USER}", "${env.PASSWORD}", "${env.IMAGE_NAME}", "${env.BUILD_ID}")
             }
         }
         stage('Cleanup') {

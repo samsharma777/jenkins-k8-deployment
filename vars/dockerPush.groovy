@@ -1,7 +1,6 @@
-def call(String registry, String registryCredential) {
-    docker.withRegistry(registry, registryCredential) {
-      def dockerImage = docker.image(imageName)
-      dockerImage.push()
-    }
+def call(String user, String password, String imageName, String buildId) {
+    sh """
+        echo $password | docker login -u $user --password-stdin
+        docker push $imageName:$buildId
+    """
 }
-
