@@ -32,7 +32,7 @@ pipeline {
         }
         stage('Cleanup') {
             steps {
-                sh "docker rmi $IMAGE_NAME:$BUILD_ID
+                sh "docker rmi $IMAGE_NAME:$BUILD_ID"
             }
         }
     }
