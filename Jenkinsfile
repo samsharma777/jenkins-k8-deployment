@@ -26,8 +26,10 @@ pipeline {
             }
         }
         stage('Push') {
-            script {
+            steps {
+              script {
                 dockerPush("${env.USER}", "${env.PASSWORD}", "${env.IMAGE_NAME}", "${env.BUILD_ID}")
+                }
             }
         }
         stage('Cleanup') {
