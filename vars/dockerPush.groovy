@@ -1,5 +1,5 @@
-def call(String registryCredential) {
-        def docker.withRegistry( '', registryCredential ) {
+def call(String imageName, String registryCredential) {
+        def docker.withRegistry( imageName, registryCredential ) {
     dockerImage.push()
     }
 }
