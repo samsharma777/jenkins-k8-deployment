@@ -1,4 +1,4 @@
-@Library ('dockerBuild') _
+@Library('dockerBuild') _
 
 pipeline {
     agent any
@@ -6,7 +6,8 @@ pipeline {
     environment {
         CERT_PASSWORD = credentials('CERT_PASSWORD')
         REGISTRY = "docker.io"
-        DOCKER_CREDS_ID = credentials('dockerhub')
+        IMAGE_NAME = "devops091/dotnet-app"
+        CREDENTIALS_ID = credentials('dockerhub')
     }
 
     stages {
@@ -15,15 +16,13 @@ pipeline {
                 // Get some code from a GitHub repository
                 git branch: 'main', url: 'https://github.com/nanditechbytes/jenkins-k8-deployment.git'
             }
-
         }
         stage('Build') {
             steps {
                 script {
-                    dockerBuild ('devops091/dotnet-app',"--build-arg CERT_PASSWORD=${env.CERT_PASSWORD}", "${env.REGISTRY}", "${env.DOCKER_CREDS_ID}")
+                    dockerBuild("${env.IMAGE_NAME}", "--build-arg CERT_PASSWORD=${env.CERT_PASSWORD}", "${env.REGISTRY}", "${env.CREDENTIALS_ID}")
                 }
             }
-
         }
     }
 }
