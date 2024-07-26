@@ -94,6 +94,8 @@ pipeline {
                         sh """
                         sed -i '' 's|<docker-image>|${IMAGE_NAME}:${BUILD_ID}|g' deployment.yml 
                         sed -i '' 's|my-registry-secret|${APP_NAME}|g' deployment.yml
+                        sed -i '' 's|sample-app|${APP_NAME}|g' deployment.yml
+                        sed -i '' 's|sample-app|${APP_NAME}|g' service.yml
                         """
 
                         // Apply deployment and service files
