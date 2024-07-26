@@ -18,6 +18,8 @@ spec:
         ports:
         - containerPort: 80
         - containerPort: 443
+      imagePullSecrets:
+      - name: my-registry-secret
         env:
         - name: ASPNETCORE_Kestrel__Certificates__Default__Password
           value: "<your-cert-password>"  # Replace with your certificate password
