@@ -67,18 +67,18 @@ pipeline {
                 ]) {
                     script {
 
-                        def secretExists = sh(script: 'kubectl get secret ${env.APP_NAME} --ignore-not-found', returnStatus: true) == 0
+                        def secretExists = sh(script: 'kubectl get secret ${APP_NAME} --ignore-not-found', returnStatus: true) == 0
                         if (!secretExists) {
                         sh """
-                        kubectl create secret docker-registry ${env.APP_NAME} \
+                        kubectl create secret docker-registry ${APP_NAME} \
                         --docker-server=https://index.docker.io/v1/ \
-                        --docker-username=${env.USER} \
-                        --docker-password=${env.PASSWORD} \
-                        --docker-email=${env.DOCKER_HUB_EMAIL}|| true
+                        --docker-username=${USER} \
+                        --docker-password=${PASSWORD} \
+                        --docker-email=${DOCKER_HUB_EMAIL}|| true
                         """
-                        echo "Secret ${env.APP_NAME} created."
+                        echo "Secret ${APP_NAME} created."
                         } else {
-                        echo "Secret ${env.APP_NAME} already exists. Skipping creation."
+                        echo "Secret ${APP_NAME} already exists. Skipping creation."
                         }
                     }
                 }
@@ -111,23 +111,23 @@ pipeline {
                          def deployStatus = sh(script: 'kubectl rollout status deployment/$APP_NAME-deployment', returnStatus: true)
                             if (deployStatus != 0) {
                             echo "Deployment failed or is not completed. Triggering rollback."
-                            sh 'kubectl rollout undo deployment/$APP_NAME-deployment'
+                            sh 'kubectl rollout undo deployment/${APP_NAME}-deployment'
                             error "Deployment failed. Rolled back to the previous version."
                         }
 
                             // Check if the pods are running
-                         def podStatus = sh(script: 'kubectl get pods -l app=$APP_NAME -o jsonpath="{.items[0].status.phase}"', returnStdout: true).trim()
+                         def podStatus = sh(script: 'kubectl get pods -l app=${APP_NAME} -o jsonpath="{.items[0].status.phase}"', returnStdout: true).trim()
                          if (podStatus != 'Running') {
                             echo "Pods are not in Running state. Triggering rollback."
-                            sh 'kubectl rollout undo deployment/$APP_NAME-deployment'
+                            sh 'kubectl rollout undo deployment/${APP_NAME}-deployment'
                             error "Pods are not in Running state. Rolled back to the previous version."
                          }
 
                         // Check if the service is available
-                         def serviceStatus = sh(script: 'kubectl get services $APP_NAME-service -o jsonpath="{.spec.ports[0].nodePort}"', returnStdout: true).trim()
+                         def serviceStatus = sh(script: 'kubectl get services ${APP_NAME}-service -o jsonpath="{.spec.ports[0].nodePort}"', returnStdout: true).trim()
                             if (!serviceStatus) {
                             echo "Service is not available. Triggering rollback."
-                            sh 'kubectl rollout undo deployment/$APP_NAME-deployment'
+                            sh 'kubectl rollout undo deployment/${APP_NAME}-deployment'
                             error "Service is not available. Rolled back to the previous version."
                          }
 
