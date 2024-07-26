@@ -9,7 +9,7 @@ pipeline {
         PASSWORD = credentials('dockerhub')
         REGISTRY = "https://index.docker.io/v1/"
         USER = "devops091"
-        APP_NAME = "sample-app"
+        APP_NAME = "dotnet-app"
         DOCKER_HUB_EMAIL = "nanditechbytes@gmail.com"
     }
 
