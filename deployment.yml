@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sample-app-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sample-app
+  template:
+    metadata:
+      labels:
+        app: sample-app
+    spec:
+      containers:
+      - name: sample-app
+        image: <docker-image>  # Replace with your Docker image
+        ports:
+        - containerPort: 80
+        - containerPort: 443
+        env:
+        - name: ASPNETCORE_Kestrel__Certificates__Default__Password
+          value: "<your-cert-password>"  # Replace with your certificate password
+        - name: ASPNETCORE_ENVIRONMENT
+          value: "Development"
+        - name: ASPNETCORE_URLS
+          value: "http://+;https://+"
+        volumeMounts:
+        - name: https-cert
+          mountPath: /app/aspnetapp.pfx
+          subPath: aspnetapp.pfx
+      volumes:
+      - name: https-cert
+        secret:
+          secretName: https-cert-secret
