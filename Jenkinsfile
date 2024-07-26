@@ -76,7 +76,7 @@ pipeline {
                     script {
                         // Replace image name in deployment.yaml
                         sh """
-                        sed -i 's|<docker-image>|${IMAGE_NAME}:${BUILD_ID}|g' deployment.yaml
+                        sed -i '' 's|<docker-image>|devops091/dotnet-app:33|g' deployment.yml 
                         """
 
                         // Apply deployment and service files
