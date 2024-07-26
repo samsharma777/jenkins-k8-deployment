@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: sample-app-deployment
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: sample-app
@@ -12,26 +12,17 @@ spec:
       labels:
         app: sample-app
     spec:
+      imagePullSecrets:
+        - name: my-registry-secret  # Reference to your Docker registry secret
       containers:
       - name: sample-app
-        image: <docker-image>  # Replace with your Docker image
+        image: <docker-image>
         ports:
         - containerPort: 80
-        - containerPort: 443
-      imagePullSecrets:
-      - name: my-registry-secret
-        env:
-        - name: ASPNETCORE_Kestrel__Certificates__Default__Password
-          value: "<your-cert-password>"  # Replace with your certificate password
-        - name: ASPNETCORE_ENVIRONMENT
-          value: "Development"
-        - name: ASPNETCORE_URLS
-          value: "http://+;https://+"
         volumeMounts:
-        - name: https-cert
-          mountPath: /app/aspnetapp.pfx
-          subPath: aspnetapp.pfx
+        - name: cert-volume
+          mountPath: /app/certs
       volumes:
-      - name: https-cert
+      - name: cert-volume
         secret:
           secretName: https-cert-secret
