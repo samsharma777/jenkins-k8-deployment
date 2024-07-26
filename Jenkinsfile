@@ -40,7 +40,7 @@ pipeline {
         }
         stage('Create Kubernetes Secret') {
             steps {
-                kubeconfig(credentialsId: 'kubeconfig') {
+                kubeconfig(credentialsId: 'kubeconfig', serverUrl: '') {
                     script {
                         sh """
                         kubectl create secret generic https-cert-secret --from-literal=password=${env.CERT_PASSWORD} || true
@@ -51,7 +51,7 @@ pipeline {
         }
         stage('Create Docker Registry Secret') {
             steps {
-                kubeconfig(credentialsId: 'kubeconfig') {
+                kubeconfig(credentialsId: 'kubeconfig', serverUrl: '') {
                     script {
                         sh """
                         kubectl create secret docker-registry ${env.APP_NAME} \
@@ -66,7 +66,7 @@ pipeline {
         }
         stage('Deploy to Kubernetes') {
             steps {
-                kubeconfig(credentialsId: 'kubeconfig') {
+                kubeconfig(credentialsId: 'kubeconfig', serverUrl: '') {
                     script {
                         // Replace image name in deployment.yaml
                         sh """
@@ -82,7 +82,7 @@ pipeline {
         }
         stage('Verify Deployment') {
             steps {
-                kubeconfig(credentialsId: 'kubeconfig') {
+                kubeconfig(credentialsId: 'kubeconfig', serverUrl: '') {
                     script {
                         def deployStatus = sh(script: 'kubectl rollout status deployment/$APP_NAME-deployment', returnStatus: true)
                         if (deployStatus != 0) {
