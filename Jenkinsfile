@@ -44,12 +44,21 @@ pipeline {
                     string(credentialsId: 'kubeconfig', variable: 'KUBE_CONFIG')
                 ]) {
                     script {
-                        sh """
-                        kubectl create secret generic https-cert-secret --from-literal=password=${env.CERT_PASSWORD} || true
+                // Check if the secret already exists
+                     def secretExists = sh(script: 'kubectl get secret https-cert-secret --ignore-not-found', returnStatus: true) == 0
+                
+                     if (!secretExists) {
+                    // If the secret does not exist, create it
+                     sh """
+                        kubectl create secret generic https-cert-secret --from-literal=password=${env.CERT_PASSWORD}
                         """
-                    }
+                        echo "Secret 'https-cert-secret' created."
+                    } else {
+                        echo "Secret 'https-cert-secret' already exists. Skipping creation."
                 }
+              }
             }
+          }
         }
         stage('Create Docker Registry Secret') {
             steps {
