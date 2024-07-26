@@ -66,6 +66,9 @@ pipeline {
                     string(credentialsId: 'kubeconfig', variable: 'KUBE_CONFIG')
                 ]) {
                     script {
+
+                        def secretExists = sh(script: 'kubectl get secret ${env.APP_NAME} --ignore-not-found', returnStatus: true) == 0
+                        if (!secretExists) {
                         sh """
                         kubectl create secret docker-registry ${env.APP_NAME} \
                         --docker-server=https://index.docker.io/v1/ \
@@ -73,6 +76,10 @@ pipeline {
                         --docker-password=${env.PASSWORD} \
                         --docker-email=${env.DOCKER_HUB_EMAIL}|| true
                         """
+                        echo "Secret ${env.APP_NAME} created."
+                        } else {
+                        echo "Secret ${env.APP_NAME} already exists. Skipping creation."
+                        }
                     }
                 }
             }
