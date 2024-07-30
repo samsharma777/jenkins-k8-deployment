@@ -18,6 +18,13 @@ spec:
         image: devops091/dotnet-app:39
         ports:
         - containerPort: 80
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
         env:
         - name: ASPNETCORE_Kestrel__Certificates__Default__Password
           valueFrom:
