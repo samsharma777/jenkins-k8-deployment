@@ -56,20 +56,29 @@ pipeline {
                 ]) {
                     script {
 
-                         def secretExists = sh(script: 'kubectl get secret ${APP_NAME} --ignore-not-found', returnStatus: true) == 0
-                         if (!secretExists) {
-                         sh """
-                          kubectl create secret docker-registry ${APP_NAME} \
-                          --docker-server=https://index.docker.io/v1/ \
-                          --docker-username=${USER} \
-                          --docker-password=${PASSWORD} \
-                          --docker-email=${DOCKER_HUB_EMAIL}|| true
-                        """
-                         echo "Secret ${APP_NAME} created."
-                         } else {
-                         echo "Secret ${APP_NAME} already exists. Skipping creation."
-                         }
-                    }
+                        def secretName = "${APP_NAME}"
+
+                // Check if the secret already exists
+                def secretCheck = sh(script: "kubectl get secret ${secretName} --ignore-not-found", returnStdout: true).trim()
+                echo "Secret check output: '${secretCheck}'"
+
+                def secretExists = secretCheck ? true : false
+                echo "secretExists: ${secretExists}"
+
+                if (!secretExists) {
+                     // If the secret does not exist, create it
+                     sh """
+                     kubectl create secret docker-registry ${secretName} \
+                     --docker-server=https://index.docker.io/v1/ \
+                     --docker-username=${USER} \
+                     --docker-password=${PASSWORD} \
+                     --docker-email=${DOCKER_HUB_EMAIL} || true
+                     """
+                     echo "Secret ${secretName} created."
+                 } else {
+                     echo "Secret ${secretName} already exists. Skipping creation."
+                   }
+                 }
                 }
             }
         }
