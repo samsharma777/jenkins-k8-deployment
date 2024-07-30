@@ -1,13 +1,12 @@
-````markdown
 # Build and Deploy Sample Application with Jenkins Pipeline to Minikube Kubernetes Cluster
 
 ## Prerequisites
 
 Ensure you have Homebrew installed on your Mac. If not, you can install it using:
 
-```sh
+````sh
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-```
+````
 
 ## 1. Install Java
 
@@ -19,7 +18,7 @@ Ensure you have Homebrew installed on your Mac. If not, you can install it using
 
    This will install OpenJDK 11.
 
-2. Set JAVA_HOME Environment Variable:** (Optional)
+2. Set JAVA_HOME Environment Variable: (Optional)
 
    After installation, you need to set the `JAVA_HOME` environment variable. The lines will be populated in the logs of java installation.
    The lines might look like the below examples.
