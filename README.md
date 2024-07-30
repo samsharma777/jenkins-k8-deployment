@@ -88,6 +88,18 @@ Ensure you have Homebrew installed on your Mac. If not, you can install it using
    minikube status
    ```
 
+
+# Once you are done with you setup, Below are the steps for clean up.
+
+```sh
+minikube stop
+
+brew services stop jenkins-lts
+
+brew uninstall jenkins-lts
+
+brew uninstall java11
+```
 ## Conclusion
 
 You have successfully installed Java, Jenkins LTS, and Minikube on your Mac using Homebrew. Ensure to check each tool's documentation for advanced configurations and troubleshooting.
