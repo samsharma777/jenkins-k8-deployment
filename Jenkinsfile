@@ -56,19 +56,19 @@ pipeline {
                 ]) {
                     script {
 
-                        def secretExists = sh(script: 'kubectl get secret ${APP_NAME} --ignore-not-found', returnStatus: true) == 0
-                        if (!secretExists) {
-                        sh """
-                        kubectl create secret docker-registry ${APP_NAME} \
-                        --docker-server=https://index.docker.io/v1/ \
-                        --docker-username=${USER} \
-                        --docker-password=${PASSWORD} \
-                        --docker-email=${DOCKER_HUB_EMAIL}|| true
+                         def secretExists = sh(script: 'kubectl get secret ${APP_NAME} --ignore-not-found', returnStatus: true) == 0
+                         if (!secretExists) {
+                         sh """
+                          kubectl create secret docker-registry ${APP_NAME} \
+                          --docker-server=https://index.docker.io/v1/ \
+                          --docker-username=${USER} \
+                          --docker-password=${PASSWORD} \
+                          --docker-email=${DOCKER_HUB_EMAIL}|| true
                         """
-                        echo "Secret ${APP_NAME} created."
-                        } else {
-                        echo "Secret ${APP_NAME} already exists. Skipping creation."
-                        }
+                         echo "Secret ${APP_NAME} created."
+                         } else {
+                         echo "Secret ${APP_NAME} already exists. Skipping creation."
+                         }
                     }
                 }
             }
