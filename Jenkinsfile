@@ -8,9 +8,9 @@ pipeline {
         IMAGE_NAME = "devops091/dotnet-app"
         PASSWORD = credentials('dockerhub')
         REGISTRY = "https://index.docker.io/v1/"
-        USER = "devops091"
+        USER = "samsharma202247"
         APP_NAME = "dotnet-app"
-        DOCKER_HUB_EMAIL = "nanditechbytes@gmail.com"
+        DOCKER_HUB_EMAIL = "samsharma202247@gmail.com"
     }
 
     stages {
