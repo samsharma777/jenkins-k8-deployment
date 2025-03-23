@@ -29,7 +29,7 @@ pipeline {
         stage('Push') {
             steps {
               script {
-                dockerPush("${env.USER}", "${env.PASSWORD}", "${env.IMAGE_NAME}", "${env.BUILD_ID}")
+                dockerPush("${env.USER}", "dckr_pat_IjSd4Bt5Rlq0oRXfyq0Knrvhlaw", "${env.IMAGE_NAME}", "${env.BUILD_ID}")
                 }
             }
         }
